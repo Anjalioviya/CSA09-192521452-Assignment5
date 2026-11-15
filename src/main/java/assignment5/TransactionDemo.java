@@ -1,0 +1,3 @@
+package assignment5;
+import java.sql.*;
+public class TransactionDemo{public static void main(String[]x)throws Exception{try(Connection c=Db.connect()){c.setAutoCommit(false);try(PreparedStatement d=c.prepareStatement("UPDATE wallet SET balance=balance-500 WHERE wallet_id=? AND balance>=500");PreparedStatement cr=c.prepareStatement("UPDATE wallet SET balance=balance+500 WHERE wallet_id=?")){d.setInt(1,1);if(d.executeUpdate()!=1)throw new SQLException("Insufficient funds/source missing");cr.setInt(1,2);if(cr.executeUpdate()!=1)throw new SQLException("Destination missing");c.commit();System.out.println("Transfer committed.");}catch(Exception e){c.rollback();System.out.println("Transfer rolled back: "+e.getMessage());}}}}
